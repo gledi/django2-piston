@@ -1,6 +1,5 @@
 import time
 from django.http import HttpResponseNotAllowed, HttpResponseForbidden, HttpResponse, HttpResponseBadRequest
-from django.core.urlresolvers import reverse
 from django.core.cache import cache
 from django import get_version as django_version
 from django.core.mail import send_mail, mail_admins
@@ -8,8 +7,6 @@ from django.conf import settings
 from django.utils.translation import ugettext as _
 from django.template import loader, TemplateDoesNotExist
 from .decorator import decorator
-
-from datetime import datetime, timedelta
 
 __version__ = '2.2.1'
 

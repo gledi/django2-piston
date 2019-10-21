@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
-from django.utils import simplejson
+import json as simplejson
 from django.conf import settings
 
 from piston import oauth
@@ -29,7 +29,7 @@ class MainTests(TestCase):
 
         if hasattr(self, 'init_delegate'):
             self.init_delegate()
-        
+
     def tearDown(self):
         self.user.delete()
 
@@ -90,7 +90,7 @@ class OAuthTests(MainTests):
         self.assertEqual(302, response.status_code)
         self.failUnless(response['Location'].startswith("http://printer.example.com/request_token_ready?"))
         self.failUnless(('oauth_token='+oatoken.key in response['Location']))
-        
+
         # Actually we can't test this last part, since it's 1.0a.
         # Obtain access token...
 #        request = oauth.OAuthRequest.from_consumer_and_token(oaconsumer, token=oatoken,
@@ -128,7 +128,7 @@ class BasicAuthTest(MainTests):
 
 class TestMultipleAuthenticators(MainTests):
     def test_both_authenticators(self):
-        for username, password in (('admin', 'admin'), 
+        for username, password in (('admin', 'admin'),
                                    ('admin', 'secr3t'),
                                    ('admin', 'user'),
                                    ('admin', 'allwork'),
@@ -166,11 +166,11 @@ class AbstractBaseClassTests(MainTests):
         self.ab1.save()
         self.ab2 = InheritedModel()
         self.ab2.save()
-        
+
     def test_field_presence(self):
         result = self.client.get('/api/abstract.json',
                 HTTP_AUTHORIZATION=self.auth_string).content
-                
+
         expected = """[
     {
         "id": 1, 
@@ -183,7 +183,7 @@ class AbstractBaseClassTests(MainTests):
         "some_field": "something here"
     }
 ]"""
-        
+
         self.assertEquals(result, expected)
 
     def test_specific_id(self):
@@ -193,13 +193,13 @@ class AbstractBaseClassTests(MainTests):
     "some_other": "something else", 
     "some_field": "something here"
 }"""
-        
+
         for id_ in ids:
             result = self.client.get('/api/abstract/%d.json' % id_,
                     HTTP_AUTHORIZATION=self.auth_string).content
-                    
+
             expected = be % id_
-            
+
             self.assertEquals(result, expected)
 
 class IncomingExpressiveTests(MainTests):
@@ -213,7 +213,7 @@ class IncomingExpressiveTests(MainTests):
         outgoing = simplejson.dumps({ 'title': 'test', 'content': 'test',
                                       'comments': [ { 'content': 'test1' },
                                                     { 'content': 'test2' } ] })
-    
+
         expected = """[
     {
         "content": "bar", 
@@ -226,17 +226,17 @@ class IncomingExpressiveTests(MainTests):
         "title": "foo2"
     }
 ]"""
-    
+
         result = self.client.get('/api/expressive.json',
             HTTP_AUTHORIZATION=self.auth_string).content
 
         self.assertEquals(result, expected)
-        
+
         resp = self.client.post('/api/expressive.json', outgoing, content_type='application/json',
             HTTP_AUTHORIZATION=self.auth_string)
-            
+
         self.assertEquals(resp.status_code, 201)
-        
+
         expected = """[
     {
         "content": "bar", 
@@ -261,10 +261,10 @@ class IncomingExpressiveTests(MainTests):
         "title": "test"
     }
 ]"""
-        
-        result = self.client.get('/api/expressive.json', 
+
+        result = self.client.get('/api/expressive.json',
             HTTP_AUTHORIZATION=self.auth_string).content
-            
+
         self.assertEquals(result, expected)
 
     def test_incoming_invalid_json(self):
@@ -277,7 +277,7 @@ class IncomingExpressiveTests(MainTests):
     def test_incoming_yaml(self):
         if not yaml:
             return
-            
+
         expected = """- comments: []
   content: bar
   title: foo
@@ -285,19 +285,19 @@ class IncomingExpressiveTests(MainTests):
   content: bar2
   title: foo2
 """
-          
+
         self.assertEquals(self.client.get('/api/expressive.yaml',
             HTTP_AUTHORIZATION=self.auth_string).content, expected)
 
         outgoing = yaml.dump({ 'title': 'test', 'content': 'test',
                                       'comments': [ { 'content': 'test1' },
                                                     { 'content': 'test2' } ] })
-            
+
         resp = self.client.post('/api/expressive.json', outgoing, content_type='application/x-yaml',
             HTTP_AUTHORIZATION=self.auth_string)
-        
+
         self.assertEquals(resp.status_code, 201)
-        
+
         expected = """- comments: []
   content: bar
   title: foo
@@ -310,7 +310,7 @@ class IncomingExpressiveTests(MainTests):
   content: test
   title: test
 """
-        self.assertEquals(self.client.get('/api/expressive.yaml', 
+        self.assertEquals(self.client.get('/api/expressive.yaml',
             HTTP_AUTHORIZATION=self.auth_string).content, expected)
 
     def test_incoming_invalid_yaml(self):
@@ -340,7 +340,7 @@ class Issue36RegressionTests(MainTests):
         super(self.__class__, self).tearDown()
         self.data.delete()
         signals.entry_request_started.disconnect(self.fetch_request)
-    
+
     def test_simple(self):
         # First try it with POST to see if it works there
         if True:
@@ -422,7 +422,7 @@ class ListFieldsTest(MainTests):
         resp = self.client.get('/api/list_fields')
         self.assertEquals(resp.status_code, 200)
         self.assertEquals(resp.content, expect)
-        
+
 class ErrorHandlingTests(MainTests):
     """Test proper handling of errors by Resource"""
 
@@ -445,7 +445,7 @@ class Issue58ModelTests(MainTests):
     it make piston crash with a `TypeError`
     """
     def init_delegate(self):
-        m1 = Issue58Model(read=True,model='t') 
+        m1 = Issue58Model(read=True,model='t')
         m1.save()
         m2 = Issue58Model(read=False,model='f')
         m2.save()

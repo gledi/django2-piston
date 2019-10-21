@@ -21,12 +21,12 @@ except NameError:
         return False
 
 from django.db.models.query import QuerySet
-from django.db.models import Model, permalink
-from django.utils import simplejson
+from django.db.models import Model
+import json as simplejson
 from django.utils.xmlutils import SimplerXMLGenerator
-from django.utils.encoding import smart_unicode
-from django.core.urlresolvers import reverse, NoReverseMatch
-from django.core.serializers.json import DateTimeAwareJSONEncoder
+from django.utils.encoding import smart_text as smart_unicode
+from django.urls import reverse, NoReverseMatch
+from django.core.serializers.json import DjangoJSONEncoder as DateTimeAwareJSONEncoder
 from django.http import HttpResponse
 from django.core import serializers
 
@@ -43,8 +43,8 @@ try:
 except ImportError:
     import pickle
 
-# Allow people to change the reverser (default `permalink`).
-reverser = permalink
+# Allow people to change the reverser (default `reverse`).
+reverser = reverse
 
 class Emitter(object):
     """
@@ -172,7 +172,7 @@ class Emitter(object):
                     if not get_fields:
                         get_fields = set([ f.attname.replace("_id", "", 1)
                             for f in data._meta.fields + data._meta.virtual_fields])
-                    
+
                     if hasattr(mapped, 'extra_fields'):
                         get_fields.update(mapped.extra_fields)
 
@@ -260,7 +260,7 @@ class Emitter(object):
                     url_id, fields = handler.resource_uri(data)
 
                     try:
-                        ret['resource_uri'] = reverser( lambda: (url_id, fields) )()
+                        ret['resource_uri'] = reverser(url_id, args=[fields])()
                     except NoReverseMatch as e:
                         pass
 
