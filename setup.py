@@ -7,18 +7,18 @@ except ImportError:
     import ez_setup
     ez_setup.use_setuptools()
     from setuptools import setup, find_packages
-    
+
 import os
 
 setup(
-    name = "django-piston",
-    version = "0.2.3rc1",
-    url = 'http://bitbucket.org/jespern/django-piston/wiki/Home',
-	download_url = 'http://bitbucket.org/jespern/django-piston/downloads/',
+    name = "django2-piston",
+    version = "2.2.1",
+    url = 'https://github.com/wilsonchingg/django2-piston',
+	download_url = 'https://github.com/wilsonchingg/django2-piston',
     license = 'BSD',
-    description = "Piston is a Django mini-framework creating APIs.",
-    author = 'Jesper Noehr',
-    author_email = 'jesper@noehr.org',
+    description = "A Django Piston fork to make it compatible to Django 2 and Python 3",
+    author = 'Wilson Ching',
+    author_email = 'wilsonchingg96@gmail.com',
     packages = find_packages(),
     namespace_packages = ['piston'],
     include_package_data = True,
