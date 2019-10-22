@@ -1,5 +1,8 @@
 ## Django2-Piston ##
 Django-Piston ported to Django 2.2. **WARNING: DO YOU USE THIS LIBRARY IF YOU ARE WRITING A NEW DJANGO APP FROM SCRATCH**
 
+### Installation ###
 
-All files had been ported except middleware.py
+```
+pip3 install django2-piston
+```
