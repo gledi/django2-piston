@@ -3,7 +3,8 @@ import urllib.request, urllib.parse, urllib.error, time, urllib.parse
 # Django imports
 from django.db.models.signals import post_save, post_delete
 from django.db import models
-from django.contrib.auth.models import User
+from django.conf import settings
+User = settings.AUTH_USER_MODEL
 
 # Piston imports
 from .managers import TokenManager, ConsumerManager
