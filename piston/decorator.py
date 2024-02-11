@@ -3,12 +3,19 @@ Decorator module, see
 http://www.phyast.pitt.edu/~micheles/python/documentation.html
 for the documentation and below for the licence.
 """
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+from __future__ import unicode_literals
 
 ## The basic trick is to generate the source code for the decorated function
 ## with the right signature and to evaluate it.
 ## Uncomment the statement 'print >> sys.stderr, func_src'  in _decorator
 ## to understand what is going on.
 
+from builtins import dict
+from future import standard_library
+standard_library.install_aliases()
 __all__ = ["decorator", "new_wrapper", "getinfo"]
 
 import inspect, sys

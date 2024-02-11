@@ -3,7 +3,16 @@
 # Placed into the Public Domain by tav <tav@espians.com>
 
 """Validate Javascript Identifiers for use as JSON-P callback parameters."""
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+from __future__ import unicode_literals
 
+from builtins import str
+from builtins import chr
+from builtins import int
+from future import standard_library
+standard_library.install_aliases()
 import re
 from unicodedata import category
 

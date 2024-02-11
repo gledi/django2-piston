@@ -1,3 +1,12 @@
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+from __future__ import unicode_literals
+from builtins import dict
+from builtins import str
+from future import standard_library
+from future.utils import with_metaclass
+standard_library.install_aliases()
 import warnings
 
 from .utils import rc
@@ -35,7 +44,7 @@ class HandlerMetaClass(type):
 
         return new_cls
 
-class BaseHandler(object, metaclass=HandlerMetaClass):
+class BaseHandler(with_metaclass(HandlerMetaClass, object)):
     """
     Basehandler that gives you CRUD for free.
     You are supposed to subclass this for specific

@@ -1,18 +1,20 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-try:
-    from setuptools import setup, find_packages
-except ImportError:
-    import ez_setup
-    ez_setup.use_setuptools()
-    from setuptools import setup, find_packages
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+from __future__ import unicode_literals
+from future import standard_library
+standard_library.install_aliases()
+
+from setuptools import setup, find_packages
 
 import os
 
 setup(
     name = "django2-piston",
-    version = "2.2.2",
+    version = "2.2.4",
     url = 'https://github.com/wilsonchingg/django2-piston',
 	download_url = 'https://github.com/wilsonchingg/django2-piston',
     license = 'BSD',
@@ -20,7 +22,7 @@ setup(
     author = 'Wilson Ching',
     author_email = 'wilsonchingg96@gmail.com',
     packages = find_packages(),
-    namespace_packages = ['piston'],
+    py_modules=['piston'],
     include_package_data = True,
     zip_safe = False,
     classifiers = [
